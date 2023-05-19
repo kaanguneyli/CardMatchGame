@@ -4,7 +4,7 @@
 #include <QPalette>
 class MatchButton : public QPushButton
 {
-    Q_OBJECT
+Q_OBJECT
 public:
     MatchButton(const int id,
                 const QString& text,
@@ -12,6 +12,10 @@ public:
     QString color;
     int id;
     QString text;
+    QColor defaultColor;
+    QColor defaultTextColor;
+
+    void mySetEnabled(bool enabled);
 };
 
 
