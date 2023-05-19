@@ -1,50 +1,54 @@
 #include <QApplication>
-#include <QPushButton>
-#include <QSpinBox>
+#include <QWidget>
 #include <QLabel>
-#include <QHBoxLayout>
-#include <QButtonGroup>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include "myButton.h"
+
 int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
     QWidget *window = new QWidget;
+    int score = 0, tries = 5;
 
-    int score = 0;
-    int tries = 50;
-    bool newGame = false;
+    QVBoxLayout *layout = new QVBoxLayout();
+    QLabel *label = new QLabel("Remaining Tries: " + QString::number(tries));
 
-    //bunların yerleşimini ayarlamak lazım
-    QLabel *label0 = new QLabel("Card Match Game");
-    QLabel *label1 = new QLabel("Score: " + QString::number(score));
-    QLabel *label2 = new QLabel("Remaining Tries: " + QString::number(tries));
-    QPushButton *buttonNewGame = new QPushButton("NEW GAME");
-    QPushButton *buttonX = new QPushButton("COUNTER");
+    QPushButton *newGameButton = new QPushButton("New Game");
+    QObject::connect(newGameButton, &QPushButton::clicked, [&](){
+        tries = 5;
+        label->setText("Remaining Tries: " + QString::number(tries));
+        score = 0;
+    });
 
+    QHBoxLayout *layout1 = new QHBoxLayout;
+    layout1->addWidget(label);
+    layout1->addWidget(newGameButton);
+    layout->addLayout(layout1);
 
-    //bunun içine newgame tıklanınca olacakları yazmak lazım
-    QObject::connect(buttonNewGame, &QPushButton::clicked, &app, [&newGame]() {newGame = true;});
+    QPushButton *buttons[30];
+    for (int j = 0; j < 5; j++) {
+        QHBoxLayout *layoutX = new QHBoxLayout;
+        for (int i = 0; i < 6; i++) {
+            //myButton *button = new myButton("bas");
+            QPushButton *button = new QPushButton("bas");
+            QObject::connect(button, &QPushButton::clicked, [&]() {
+                if (tries > 0) {
+                    tries--;
+                    label->setText("Remaining Tries: " + QString::number(tries));
+                } if (score == 15) {
+                    label->setText("HELAL LAN YUSUFİ");
+                } else if (tries == 0) {
+                    label->setText("SALAK SALAK SALAK");
+                }
+            });
+            buttons[j*6+i] = button;
+            layoutX->addWidget(button);
+        }
+        layout ->addLayout(layoutX);
+    }
 
-    //bunun içine tries 0 ise olacakları yazmak lazım
-    QObject::connect(buttonX, &QPushButton::clicked, [&tries, &label2]() {tries--, label2 -> setText("Remaining Tries: " + QString::number(tries));});
-
-
-    //setTable diye bir fonksiyon olsun, bu en burada (tüm widgetları içine almalı) çalışsın, bir de newgame denince çalışsın
-    //win ve lose fonksiyonları olsun bir de (bunlarda da kazandın+skor/kaybettin ve newgame butonu olsun)
- 
-
-
-    QHBoxLayout *layout = new QHBoxLayout;
-
-    layout -> addWidget(label0);
-    layout -> addWidget(label1);
-    layout -> addWidget(label2);
-    layout -> addWidget(buttonNewGame);
-    layout -> addWidget(buttonX);
-
-
-
-    window -> setLayout(layout);
-    window -> show();
-
+    window->setLayout(layout);
+    window->show();
     return app.exec();
 }
