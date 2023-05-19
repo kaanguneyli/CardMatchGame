@@ -7,9 +7,9 @@
 #include <QTimer>
 class MyGrid: public QGridLayout
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    QPushButton * arr[30];
+    MatchButton * arr[30];
     MyGrid();
     MatchButton* sel_id = NULL;
     int score = 0, tries = 50;
