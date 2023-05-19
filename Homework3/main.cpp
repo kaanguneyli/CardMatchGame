@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
     vb->addSpacerItem(si);
 
     cw->setWindowTitle("Matching Game");
-    cw->resize(640, 480);
+    cw->resize(640, 280);
     cw->show();
     return app.exec();
 }
