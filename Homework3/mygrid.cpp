@@ -17,18 +17,21 @@ void MyGrid::check_matches(){
             this->sel_id = clickedButton;
         }else if((this->sel_id->id)!=(clickedButton->id)){
             if(sel_id->text==clickedButton->text){
-                sel_id->setText("");
-                sel_id->text = "";
-                clickedButton->setText("");
-                clickedButton -> text = "";
-                this->score++;
-                this->tries--;
+                clickedButton->setText(clickedButton->text);
+                QTimer::singleShot(320, this,[=]() {
+                    sel_id->setText("");
+                    sel_id->text = "";
+                    clickedButton->setText("");
+                    clickedButton->text = "";
+                    this->score++;
+                    this->tries--;
 
-                label2->setText("Remaining Tries: " + QString::number(tries));
+                    label2->setText("Remaining Tries: " + QString::number(tries));
 
-                label->setText("Score: " + QString::number(score));
-                is_finished();
-                this->sel_id = NULL;
+                    label->setText("Score: " + QString::number(score));
+                    is_finished();
+                    this->sel_id = NULL;
+                });
             }else{
                 clickedButton->setText(clickedButton->text);
                 for(int i=0;i<30;i++){
